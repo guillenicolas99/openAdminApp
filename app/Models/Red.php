@@ -4,19 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Persona extends Model
+class Red extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'last_name',
-        'red_id'
+        'lider',
+        'color',
     ];
 
-    public function redes ():BelongsTo{
-        return $this->belongsTo(Red::class);
+    public function discipulos():HasMany{
+        return $this->hasMany(Persona::class);
     }
 }

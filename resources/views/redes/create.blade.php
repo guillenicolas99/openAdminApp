@@ -1,9 +1,10 @@
 <div class="col-md-12 mb-3">
-    <form method="POST" action="{{ route('admin.persona.store') }}">
+    <form method="POST" action="{{route('admin.redes.store')}}">
         @csrf
         <div class="row">
             <div class="col-md-6 mb-3">
-                <input type="text" placeholder="Nombre" name="name" class="form-control" value="{{ old('name') }}">
+                <input type="text" placeholder="Nombre de la red" name="name" class="form-control"
+                    value="{{ old('name') }}">
                 @error('name')
                     <small class="text-danger">
                         {{ $message }}
@@ -11,7 +12,7 @@
                 @enderror
             </div>
             <div class="col-md-6 mb-3">
-                <input type="text" placeholder="Apellido" name="last_name" class="form-control"
+                <input type="text" placeholder="Lider de la Red" name="lider" class="form-control"
                     value="{{ old('last_name') }}">
                 @error('last_name')
                     <small class="text-danger">
@@ -20,11 +21,13 @@
                 @enderror
             </div>
             <div class="col-md-6 mb-3">
-                <select class="form-select" name="red_id">
-                    @foreach ($redes as $red)
-                        <option value="{{ $red->id }}">{{ $red->name }}</option>
-                    @endforeach
-                </select>
+                <input type="text" placeholder="Color que la Identifica" name="color" class="form-control"
+                    value="{{ old('color') }}">
+                @error('color')
+                    <small class="text-danger">
+                        {{ $message }}
+                    </small>
+                @enderror
             </div>
             <div class="col-md-12 mb-3">
                 <button class="btn btn-success" type="submit">Agregar</button>

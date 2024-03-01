@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Persona;
+use App\Models\Red;
 use Illuminate\Http\Request;
 use OpenAdmin\Admin\Layout\Content;
 
@@ -13,9 +14,8 @@ class PersonaController extends Controller
      */
     public function index(Content $content)
     {
-        //
         return $content
-            ->title('Lista de Personas')
+            ->title('Personas')
             ->description('Lista de personas de almacenadas')
             ->view('personas.list', [
                 'personas' => Persona::orderByDesc('created_at')->get(),
@@ -27,11 +27,12 @@ class PersonaController extends Controller
      */
     public function create(Content $content)
     {
-        //
         return $content
-            ->title('Create Method')
+            ->title('Persona')
             ->description('Crear Persona')
-            ->view('personas.create');
+            ->view('personas.create', [
+                'redes' => Red::orderByDesc('name')->get(),
+            ]);
     }
 
     /**
@@ -41,15 +42,18 @@ class PersonaController extends Controller
     {
         $request->validate([
             'name' => ['required', 'min:3', 'max:25'],
-            'last_name' => ['required', 'min:3', 'max:25']
+            'last_name' => ['required', 'min:3', 'max:25'],
+            'red_id' => ['required'],
         ]);
 
         $name = request('name');
-        $lastName = request('last_name');;
+        $lastName = request('last_name');
+        $red_id = request('red_id');
 
         Persona::create([
             'name' => $name,
-            'last_name' => $lastName
+            'last_name' => $lastName,
+            'red_id' => $red_id
         ]);
 
         return to_route('admin.personas.index');
@@ -66,9 +70,14 @@ class PersonaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Persona $persona)
+    public function edit(Persona $persona, Content $content)
     {
-        //
+        return $content
+            ->title('Persona')
+            ->description('Editar Persona')
+            ->view('personas.edit', [
+                'persona' => $persona
+            ]);
     }
 
     /**
@@ -76,7 +85,14 @@ class PersonaController extends Controller
      */
     public function update(Request $request, Persona $persona)
     {
-        //
+        $validated = $request->validate([
+            'name' => ['required', 'min:3', 'max:25'],
+            'last_name' => ['required', 'min:3', 'max:25']
+        ]);
+
+        $persona->update($validated);
+
+        return to_route('admin.personas.index');
     }
 
     /**
